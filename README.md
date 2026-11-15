@@ -10,6 +10,15 @@ A local-only vector drawing and PDF editing tool. It's a static page with no ser
 
 ---
 
+## Install the launcher (Linux)
+`Vector.desktop` is a template. From the folder you cloned into, run:
+
+```bash
+d="$PWD"; sed -e "s|@DIR@|$d|g" -e "s|@WMDIR@|${d//\//_}|g" Vector.desktop > ~/.local/share/applications/Vector.desktop
+```
+
+**Vector** then appears in your app menu and opens as a standalone Chrome window. It needs `google-chrome-stable`; edit the `Exec` line for Chromium.
+
 ## SVG editor
 
 **Drawing tools:** select, edit nodes, pan, rectangle (with corner radius), ellipse, line, polygon, star, pen (Bézier), freehand (auto-smoothed), text, image, eyedropper.
@@ -71,7 +80,7 @@ js/svg-ui.js          panels, export, optimiser, files, keyboard
 js/pdf-editor.js      PDF editor (pdf.js rendering, pdf-lib writing)
 js/app.js             mode switching, theme
 vendor/               pdf.js 3.11.174, pdf-lib 1.17.1 (see vendor/LICENSES.md)
-Vector.desktop        launcher (copied to ~/.local/share/applications)
+Vector.desktop        launcher template (see "Install the launcher")
 ```
 
 ## Security
