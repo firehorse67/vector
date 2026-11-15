@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="screenshot.png" alt="Vector — local SVG and PDF editor" />
+</p>
+
 # Vector — SVG & PDF editor
 
 A local-only vector drawing and PDF editing tool. It's a static page with no server, build step or account, and it makes no network requests. Open `index.html` in Chrome (or use the **Vector** launcher) and everything runs on this computer.
