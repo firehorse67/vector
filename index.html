@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; script-src 'self' file:; style-src 'self' file: 'unsafe-inline'; img-src 'self' file: data: blob:; font-src 'self' file: data:; connect-src 'self' file: data: blob:; worker-src 'self' file: blob:; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Vector — SVG &amp; PDF editor</title>
+<link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="stylesheet" href="css/app.css">
+<script src="js/theme.js"></script>
+</head>
+<body>
+
+<!-- Icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-select" viewBox="0 0 24 24"><path d="M5 3l14 8-6 1.6L10 19z"/></symbol>
+    <symbol id="i-node" viewBox="0 0 24 24"><path d="M4 18C8 6 16 18 20 6"/><rect x="2.5" y="16.5" width="3" height="3"/><rect x="18.5" y="4.5" width="3" height="3"/><circle cx="12" cy="12" r="1.6"/></symbol>
+    <symbol id="i-rect" viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12" rx="1.5"/></symbol>
+    <symbol id="i-ellipse" viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8.5" ry="6.5"/></symbol>
+    <symbol id="i-line" viewBox="0 0 24 24"><path d="M5 19L19 5"/></symbol>
+    <symbol id="i-polygon" viewBox="0 0 24 24"><path d="M12 3.5l8 6-3 9.5H7L4 9.5z"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.5l2.6 5.6 6 .7-4.5 4.1 1.2 6-5.3-3-5.3 3 1.2-6-4.5-4.1 6-.7z"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 3l6 9-6 9-6-9z"/><circle cx="12" cy="12" r="1.5"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20l1-4L16 5l3 3L8 19zM14 7l3 3"/></symbol>
+    <symbol id="i-text" viewBox="0 0 24 24"><path d="M5 6V4h14v2M12 4v16M9 20h6"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="1.5"/><circle cx="9" cy="10" r="1.6"/><path d="M4 18l5-5 4 4 3-3 4 4"/></symbol>
+    <symbol id="i-hand" viewBox="0 0 24 24"><path d="M8 12V6a1.5 1.5 0 013 0v5V4.5a1.5 1.5 0 013 0V11V6a1.5 1.5 0 013 0v8c0 4-2.5 6.5-6 6.5-2.6 0-4-1.2-5.5-3.3L5 13.5a1.5 1.5 0 012.4-1.8L8 12.5"/></symbol>
+    <symbol id="i-eyedrop" viewBox="0 0 24 24"><path d="M14.5 5.5l4 4M17 3.5a2.1 2.1 0 013 3l-2 2-3-3zM15 7l-9 9-1 4 4-1 9-9"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 7L4 12l5 5M4 12h11a5 5 0 010 10h-3"/></symbol>
+    <symbol id="i-redo" viewBox="0 0 24 24"><path d="M15 7l5 5-5 5M20 12H9a5 5 0 000 10h3"/></symbol>
+    <symbol id="i-open" viewBox="0 0 24 24"><path d="M3.5 18.5V6.5a1 1 0 011-1h5l2 2h8a1 1 0 011 1v2M3.5 18.5l3-8h15l-3 8z"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6"/></symbol>
+    <symbol id="i-export" viewBox="0 0 24 24"><path d="M12 15V3M7 8l5-5 5 5M4 14v6h16v-6"/></symbol>
+    <symbol id="i-new" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6zM14 3v4h4M12 11v6M9 14h6"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 9.3h16M4 14.6h16M9.3 4v16M14.6 4v16"/></symbol>
+    <symbol id="i-magnet" viewBox="0 0 24 24"><path d="M6 4v8a6 6 0 0012 0V4h-4v8a2 2 0 01-4 0V4zM6 8h4M14 8h4"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.4 1.4M17.6 17.6L19 19M5 19l1.4-1.4M17.6 6.4L19 5"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="1.5"/><path d="M16 8V5a1 1 0 00-1-1H5a1 1 0 00-1 1v10a1 1 0 001 1h3"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M3 3l18 18M10.6 5.1A10 10 0 0112 5c6.5 0 10 7 10 7a17 17 0 01-3 3.8M6.5 6.6C3.7 8.4 2 12 2 12s3.5 7 10 7a9.6 9.6 0 004.5-1.1M9.9 9.9a3 3 0 004.2 4.2"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 018 0v3"/></symbol>
+    <symbol id="i-unlock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 017.7-1.5"/></symbol>
+    <symbol id="i-rotl" viewBox="0 0 24 24"><path d="M4 4v5h5M4.5 9A8 8 0 1112 20"/></symbol>
+    <symbol id="i-rotr" viewBox="0 0 24 24"><path d="M20 4v5h-5M19.5 9A8 8 0 1012 20"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-highlight" viewBox="0 0 24 24"><path d="M4 20h7M14.5 4.5l5 5-8 8H6.5v-5z"/></symbol>
+    <symbol id="i-whiteout" viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="10" rx="1"/><path d="M8 12h8" stroke-dasharray="2 2"/></symbol>
+    <symbol id="i-redact" viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="10" rx="1" fill="currentColor"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 19L19 5M10 5h9v9"/></symbol>
+    <symbol id="i-sign" viewBox="0 0 24 24"><path d="M3 17c3-1 4-9 6-9s-1 9 1 9 3-5 4-5 0 4 2 4 3-2 5-2M3 21h18"/></symbol>
+    <symbol id="i-shape-svg" viewBox="0 0 24 24"><path d="M4 4h7v7H4z"/><circle cx="17" cy="7.5" r="3.5"/><path d="M7.5 13.5L12 21H3z"/><path d="M14 14h7v7h-7z"/></symbol>
+    <symbol id="i-form" viewBox="0 0 24 24"><rect x="4" y="3.5" width="16" height="17" rx="1.5"/><path d="M8 8h8M8 12h8M8 16h4"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></symbol>
+    <symbol id="i-split" viewBox="0 0 24 24"><path d="M12 3v18M6 7H3v10h3M18 7h3v10h-3"/></symbol>
+    <symbol id="i-blank" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z"/></symbol>
+    <symbol id="i-zoomfit" viewBox="0 0 24 24"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></symbol>
+    <symbol id="i-keyboard" viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="1.5"/><path d="M6 10h1M9.5 10h1M13 10h1M16.5 10h1M7 14h10"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  </defs>
+</svg>
+
+<header class="topbar">
+  <div class="brand"><img src="icons/icon.svg" alt="" width="22" height="22"><span>Vector</span></div>
+  <nav class="modes" role="tablist">
+    <button role="tab" data-mode="svg" aria-selected="true">SVG editor</button>
+    <button role="tab" data-mode="pdf" aria-selected="false">PDF editor</button>
+  </nav>
+  <div class="top-actions" data-for="svg">
+    <button class="tb" id="svgNew" title="New drawing (Ctrl+Alt+N)"><svg><use href="#i-new"/></svg></button>
+    <button class="tb" id="svgOpen" title="Open SVG or image (Ctrl+O)"><svg><use href="#i-open"/></svg></button>
+    <button class="tb" id="svgSave" title="Save SVG (Ctrl+S)"><svg><use href="#i-save"/></svg></button>
+    <button class="tb wide" id="svgExport" title="Export (Ctrl+E)"><svg><use href="#i-export"/></svg><span>Export</span></button>
+    <span class="sep"></span>
+    <button class="tb" id="svgUndo" title="Undo (Ctrl+Z)"><svg><use href="#i-undo"/></svg></button>
+    <button class="tb" id="svgRedo" title="Redo (Ctrl+Shift+Z)"><svg><use href="#i-redo"/></svg></button>
+    <span class="sep"></span>
+    <button class="tb toggle" id="svgGrid" title="Show grid (Ctrl+')"><svg><use href="#i-grid"/></svg></button>
+    <button class="tb toggle" id="svgSnap" title="Snap to grid"><svg><use href="#i-magnet"/></svg></button>
+    <label class="grid-size" title="Grid size">grid <input type="number" id="svgGridSize" min="1" max="500" value="10"></label>
+    <span class="sep"></span>
+    <button class="tb" id="svgZoomOut" title="Zoom out (−)">−</button>
+    <button class="zoomlabel" id="svgZoomLabel" title="Zoom to fit (Shift+1); click for 100%">100%</button>
+    <button class="tb" id="svgZoomIn" title="Zoom in (+)">+</button>
+    <button class="tb" id="svgFit" title="Fit drawing (Shift+1)"><svg><use href="#i-zoomfit"/></svg></button>
+    <span class="sep"></span>
+    <button class="tb wide" id="svgToPdf" title="Send this drawing to the PDF editor"><svg><use href="#i-shape-svg"/></svg><span>To PDF</span></button>
+  </div>
+  <div class="top-actions" data-for="pdf" hidden>
+    <button class="tb wide" id="pdfOpen" title="Open PDF (Ctrl+O)"><svg><use href="#i-open"/></svg><span>Open</span></button>
+    <button class="tb wide" id="pdfAdd" title="Append pages from other PDFs or images"><svg><use href="#i-plus"/></svg><span>Add files</span></button>
+    <button class="tb wide primary" id="pdfSave" title="Save PDF (Ctrl+S)"><svg><use href="#i-save"/></svg><span>Save PDF</span></button>
+    <span class="sep"></span>
+    <button class="tb" id="pdfUndo" title="Undo (Ctrl+Z)"><svg><use href="#i-undo"/></svg></button>
+    <button class="tb" id="pdfRedo" title="Redo (Ctrl+Shift+Z)"><svg><use href="#i-redo"/></svg></button>
+    <span class="sep"></span>
+    <button class="tb" id="pdfZoomOut" title="Zoom out (−)">−</button>
+    <button class="zoomlabel" id="pdfZoomLabel" title="Fit width">100%</button>
+    <button class="tb" id="pdfZoomIn" title="Zoom in (+)">+</button>
+  </div>
+  <div class="spacer"></div>
+  <button class="tb" id="helpBtn" title="Keyboard shortcuts (?)"><svg><use href="#i-keyboard"/></svg></button>
+  <button class="tb" id="themeBtn" title="Toggle light/dark"><svg><use href="#i-sun"/></svg></button>
+</header>
+
+<!-- ============================ SVG MODE ============================ -->
+<main id="svgMode" class="mode">
+  <nav class="toolbox" aria-label="Tools">
+    <button data-tool="select" title="Select / move (V)"><svg><use href="#i-select"/></svg></button>
+    <button data-tool="node" title="Edit nodes (A) — double-click a path"><svg><use href="#i-node"/></svg></button>
+    <button data-tool="hand" title="Pan (H, or hold Space)"><svg><use href="#i-hand"/></svg></button>
+    <hr>
+    <button data-tool="rect" title="Rectangle (R)"><svg><use href="#i-rect"/></svg></button>
+    <button data-tool="ellipse" title="Ellipse (E)"><svg><use href="#i-ellipse"/></svg></button>
+    <button data-tool="line" title="Line (L)"><svg><use href="#i-line"/></svg></button>
+    <button data-tool="polygon" title="Polygon (G)"><svg><use href="#i-polygon"/></svg></button>
+    <button data-tool="star" title="Star (S)"><svg><use href="#i-star"/></svg></button>
+    <button data-tool="pen" title="Pen — click for corners, drag for curves (P)"><svg><use href="#i-pen"/></svg></button>
+    <button data-tool="pencil" title="Freehand (F)"><svg><use href="#i-pencil"/></svg></button>
+    <button data-tool="text" title="Text (T)"><svg><use href="#i-text"/></svg></button>
+    <button data-tool="image" title="Insert image (I)"><svg><use href="#i-image"/></svg></button>
+    <button data-tool="eyedrop" title="Pick colour from a shape (K)"><svg><use href="#i-eyedrop"/></svg></button>
+    <hr>
+    <div class="swatches" title="Fill / stroke for new shapes">
+      <label class="sw fill" title="Fill for new shapes"><input type="color" id="defFill" value="#4f8cff"><span></span></label>
+      <label class="sw stroke" title="Stroke for new shapes"><input type="color" id="defStroke" value="#1d2b4f"><span></span></label>
+    </div>
+  </nav>
+
+  <section class="stage-col">
+    <div class="toolopts" id="toolOpts"></div>
+    <div class="stage" id="stage" tabindex="0">
+      <svg id="view" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="checker" width="16" height="16" patternUnits="userSpaceOnUse">
+            <rect width="16" height="16" class="chk-a"/><rect width="8" height="8" class="chk-b"/><rect x="8" y="8" width="8" height="8" class="chk-b"/>
+          </pattern>
+        </defs>
+        <g id="viewport">
+          <rect id="pageShadow"/>
+          <rect id="pageBg" fill="url(#checker)"/>
+          <g id="docHost"></g>
+          <g id="gridLayer" pointer-events="none"></g>
+        </g>
+        <g id="overlay"></g>
+      </svg>
+      <div class="drop-hint" id="svgDropHint">Drop an SVG or image to open it</div>
+    </div>
+    <footer class="statusbar">
+      <span id="svgStatus">Ready</span>
+      <span class="spacer"></span>
+      <span id="svgCursor"></span>
+      <span id="svgDocSize"></span>
+    </footer>
+  </section>
+
+  <aside class="panels">
+    <div class="ptabs" role="tablist">
+      <button data-ptab="props" aria-selected="true">Properties</button>
+      <button data-ptab="layers" aria-selected="false">Layers</button>
+      <button data-ptab="code" aria-selected="false">Code</button>
+    </div>
+    <div class="ppane" data-ppane="props" id="propsPane"></div>
+    <div class="ppane" data-ppane="layers" id="layersPane" hidden></div>
+    <div class="ppane code" data-ppane="code" hidden>
+      <div class="code-bar">
+        <span id="codeState" class="muted">In sync</span>
+        <span class="spacer"></span>
+        <button class="btn sm" id="codeFormat">Format</button>
+        <button class="btn sm" id="codeOptimize" title="Show the optimised output">Optimise</button>
+        <button class="btn sm" id="codeCopy">Copy</button>
+      </div>
+      <textarea id="codeText" spellcheck="false" autocomplete="off" autocapitalize="off"></textarea>
+    </div>
+  </aside>
+</main>
+
+<!-- ============================ PDF MODE ============================ -->
+<main id="pdfMode" class="mode" hidden>
+  <aside class="thumbs-col">
+    <div class="thumbs-bar">
+      <button class="tb" id="pgRotL" title="Rotate selected pages left"><svg><use href="#i-rotl"/></svg></button>
+      <button class="tb" id="pgRotR" title="Rotate selected pages right"><svg><use href="#i-rotr"/></svg></button>
+      <button class="tb" id="pgDup" title="Duplicate selected pages"><svg><use href="#i-copy"/></svg></button>
+      <button class="tb" id="pgBlank" title="Insert a blank page after the current one"><svg><use href="#i-blank"/></svg></button>
+      <button class="tb" id="pgDel" title="Delete selected pages (Delete)"><svg><use href="#i-trash"/></svg></button>
+      <span class="spacer"></span>
+      <button class="tb" id="pgExtract" title="Save selected pages as a new PDF"><svg><use href="#i-export"/></svg></button>
+      <button class="tb" id="pgSplit" title="Split: save pages before and from the current page as two PDFs"><svg><use href="#i-split"/></svg></button>
+    </div>
+    <div class="thumbs" id="thumbs" tabindex="0"></div>
+    <div class="thumbs-foot muted" id="pdfPageCount"></div>
+  </aside>
+
+  <section class="stage-col">
+    <div class="toolopts pdf-tools" id="pdfTools">
+      <div class="seg">
+        <button data-ptool="select" title="Select / move annotations (V)"><svg><use href="#i-select"/></svg></button>
+        <button data-ptool="text" title="Add text (T)"><svg><use href="#i-text"/></svg></button>
+        <button data-ptool="highlight" title="Highlight (H)"><svg><use href="#i-highlight"/></svg></button>
+        <button data-ptool="rect" title="Rectangle (R)"><svg><use href="#i-rect"/></svg></button>
+        <button data-ptool="ellipse" title="Ellipse (E)"><svg><use href="#i-ellipse"/></svg></button>
+        <button data-ptool="line" title="Line (L)"><svg><use href="#i-line"/></svg></button>
+        <button data-ptool="arrow" title="Arrow (A)"><svg><use href="#i-arrow"/></svg></button>
+        <button data-ptool="ink" title="Freehand ink (F)"><svg><use href="#i-pencil"/></svg></button>
+        <button data-ptool="whiteout" title="White-out box (W)"><svg><use href="#i-whiteout"/></svg></button>
+        <button data-ptool="redact" title="Redact — permanently removes content underneath on save (X)"><svg><use href="#i-redact"/></svg></button>
+        <button data-ptool="image" title="Place an image"><svg><use href="#i-image"/></svg></button>
+        <button data-ptool="sign" title="Signature"><svg><use href="#i-sign"/></svg></button>
+        <button data-ptool="svg" title="Place the drawing from the SVG editor"><svg><use href="#i-shape-svg"/></svg></button>
+      </div>
+      <span class="sep"></span>
+      <label class="opt">Colour <input type="color" id="pColor" value="#d0021b"></label>
+      <label class="opt">Width <input type="number" id="pWidth" min="0.25" max="40" step="0.25" value="2"></label>
+      <label class="opt">Size <input type="number" id="pSize" min="4" max="144" value="14"></label>
+      <label class="opt">Font
+        <select id="pFont"><option value="Helvetica">Sans</option><option value="TimesRoman">Serif</option><option value="Courier">Mono</option></select>
+      </label>
+      <label class="opt chk"><input type="checkbox" id="pBold"> Bold</label>
+      <label class="opt chk"><input type="checkbox" id="pFillOn"> Fill</label>
+      <input type="color" id="pFill" value="#ffe08a" title="Fill colour">
+    </div>
+    <div class="stage pdf-stage" id="pdfStage" tabindex="0">
+      <div class="pdf-empty" id="pdfEmpty">
+        <svg class="big"><use href="#i-form"/></svg>
+        <h2>Open a PDF to edit</h2>
+        <p>Reorder, rotate, delete, merge and split pages · add text, shapes, highlights, signatures and drawings · fill forms · redact · edit metadata.</p>
+        <p class="muted">Everything stays on this computer.</p>
+        <div class="row">
+          <button class="btn primary" id="pdfOpen2">Open PDF…</button>
+          <button class="btn" id="pdfNewBlank">Start a blank PDF</button>
+        </div>
+        <p class="muted small">Or drop PDF / image files here.</p>
+      </div>
+      <div class="pdf-page-wrap" id="pdfPageWrap" hidden>
+        <div class="pdf-page" id="pdfPage">
+          <canvas id="pdfCanvas"></canvas>
+          <svg id="pdfOverlay" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+      </div>
+    </div>
+    <footer class="statusbar">
+      <span id="pdfStatus">No document</span>
+      <span class="spacer"></span>
+      <span id="pdfPageInfo"></span>
+    </footer>
+  </section>
+
+  <aside class="panels">
+    <div class="ptabs" role="tablist">
+      <button data-qtab="annot" aria-selected="true">Annotation</button>
+      <button data-qtab="form" aria-selected="false">Form</button>
+      <button data-qtab="info" aria-selected="false">Document</button>
+    </div>
+    <div class="ppane" data-qpane="annot" id="pdfAnnotPane"></div>
+    <div class="ppane" data-qpane="form" id="pdfFormPane" hidden></div>
+    <div class="ppane" data-qpane="info" id="pdfInfoPane" hidden></div>
+  </aside>
+</main>
+
+<!-- ============================ DIALOGS ============================ -->
+<dialog id="exportDlg" class="dlg">
+  <form method="dialog">
+    <header><h3>Export drawing</h3><button class="x" value="cancel" aria-label="Close"><svg><use href="#i-close"/></svg></button></header>
+    <div class="dlg-body">
+      <div class="fmt-grid" id="exportFormats">
+        <label><input type="radio" name="fmt" value="svg" checked><b>SVG</b><small>As edited</small></label>
+        <label><input type="radio" name="fmt" value="svgo"><b>SVG optimised</b><small>Smaller file</small></label>
+        <label><input type="radio" name="fmt" value="png"><b>PNG</b><small>Transparent</small></label>
+        <label><input type="radio" name="fmt" value="jpeg"><b>JPEG</b><small>Photo</small></label>
+        <label><input type="radio" name="fmt" value="webp"><b>WebP</b><small>Small raster</small></label>
+        <label><input type="radio" name="fmt" value="pdf"><b>PDF</b><small>Vector</small></label>
+        <label><input type="radio" name="fmt" value="pdfr"><b>PDF raster</b><small>Exact look</small></label>
+        <label><input type="radio" name="fmt" value="jsx"><b>React</b><small>Component</small></label>
+        <label><input type="radio" name="fmt" value="datauri"><b>Data URI</b><small>Copy</small></label>
+        <label><input type="radio" name="fmt" value="ico"><b>Favicons</b><small>16–512 PNGs</small></label>
+      </div>
+      <div class="exp-opts" id="exportOpts"></div>
+      <div class="exp-preview" id="exportInfo"></div>
+    </div>
+    <footer>
+      <input type="text" id="exportName" value="drawing" aria-label="File name">
+      <span class="spacer"></span>
+      <button class="btn" value="cancel">Cancel</button>
+      <button class="btn primary" id="exportGo" value="default">Export</button>
+    </footer>
+  </form>
+</dialog>
+
+<dialog id="sigDlg" class="dlg">
+  <form method="dialog">
+    <header><h3>Signature</h3><button class="x" value="cancel" aria-label="Close"><svg><use href="#i-close"/></svg></button></header>
+    <div class="dlg-body">
+      <p class="muted small">Draw your signature below. It's stored as vector strokes in the PDF.</p>
+      <canvas id="sigPad" width="560" height="200"></canvas>
+      <label class="chk"><input type="checkbox" id="sigRemember"> Remember this signature on this computer</label>
+    </div>
+    <footer>
+      <button class="btn" type="button" id="sigClear">Clear</button>
+      <button class="btn" type="button" id="sigSaved" hidden>Use saved</button>
+      <span class="spacer"></span>
+      <button class="btn" value="cancel">Cancel</button>
+      <button class="btn primary" value="ok" id="sigOk">Place</button>
+    </footer>
+  </form>
+</dialog>
+
+<dialog id="promptDlg" class="dlg small">
+  <form method="dialog">
+    <header><h3 id="promptTitle">Input</h3></header>
+    <div class="dlg-body"><p id="promptMsg" class="muted"></p><input type="text" id="promptInput" autocomplete="off"></div>
+    <footer><span class="spacer"></span><button class="btn" value="cancel">Cancel</button><button class="btn primary" value="ok">OK</button></footer>
+  </form>
+</dialog>
+
+<dialog id="helpDlg" class="dlg">
+  <form method="dialog">
+    <header><h3>Keyboard shortcuts</h3><button class="x" value="cancel" aria-label="Close"><svg><use href="#i-close"/></svg></button></header>
+    <div class="dlg-body help-grid">
+      <section><h4>SVG tools</h4>
+        <dl><dt>V</dt><dd>Select</dd><dt>A</dt><dd>Edit nodes</dd><dt>H / Space</dt><dd>Pan</dd><dt>R E L</dt><dd>Rect, ellipse, line</dd><dt>G S</dt><dd>Polygon, star</dd><dt>P F</dt><dd>Pen, freehand</dd><dt>T I K</dt><dd>Text, image, eyedropper</dd></dl>
+      </section>
+      <section><h4>Editing</h4>
+        <dl><dt>Ctrl+Z / Ctrl+Shift+Z</dt><dd>Undo / redo</dd><dt>Ctrl+C X V D</dt><dd>Copy, cut, paste, duplicate</dd><dt>Ctrl+A</dt><dd>Select all</dd><dt>Ctrl+G / Ctrl+Shift+G</dt><dd>Group / ungroup</dd><dt>Ctrl+] / Ctrl+[</dt><dd>Forward / backward</dd><dt>Ctrl+Shift+] / [</dt><dd>To front / back</dd><dt>Arrows</dt><dd>Nudge (Shift ×10)</dd><dt>Del</dt><dd>Delete</dd><dt>Enter / dbl-click</dt><dd>Edit nodes or text; enter group</dd><dt>Esc</dt><dd>Finish / leave group</dd></dl>
+      </section>
+      <section><h4>While dragging</h4>
+        <dl><dt>Shift</dt><dd>Keep proportions, 15° steps, 45° lines</dd><dt>Alt</dt><dd>Resize from centre</dd><dt>Alt+drag</dt><dd>Duplicate while moving</dd></dl>
+        <h4>View &amp; file</h4>
+        <dl><dt>+ / −</dt><dd>Zoom</dd><dt>Shift+1 / 1</dt><dd>Fit / 100%</dd><dt>Ctrl+scroll</dt><dd>Zoom at pointer</dd><dt>Ctrl+O S E</dt><dd>Open, save, export</dd><dt>Ctrl+'</dt><dd>Toggle grid</dd></dl>
+      </section>
+      <section><h4>PDF editor</h4>
+        <dl><dt>V T H R E L A F W X</dt><dd>Select, text, highlight, rect, ellipse, line, arrow, ink, white-out, redact</dd><dt>PgUp / PgDn</dt><dd>Previous / next page</dd><dt>Del</dt><dd>Delete annotation (or selected pages from the thumbnail list)</dd><dt>Dbl-click text</dt><dd>Edit</dd></dl>
+      </section>
+    </div>
+  </form>
+</dialog>
+
+<input type="file" id="fileSvg" accept=".svg,image/svg+xml,image/png,image/jpeg,image/webp,image/gif" hidden>
+<input type="file" id="fileImg" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" hidden>
+<input type="file" id="filePdf" accept="application/pdf,.pdf" hidden>
+<input type="file" id="filePdfAdd" accept="application/pdf,.pdf,image/png,image/jpeg,image/webp" multiple hidden>
+<input type="file" id="filePdfImg" accept="image/png,image/jpeg,image/webp" hidden>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<div id="busy" hidden><div class="spinner"></div><span id="busyMsg">Working…</span></div>
+
+<script src="vendor/pdf.min.js"></script>
+<script src="vendor/pdf.worker.min.js"></script>
+<script src="vendor/pdf-lib.min.js"></script>
+<script src="js/util.js"></script>
+<script src="js/path.js"></script>
+<script src="js/svg2pdf.js"></script>
+<script src="js/svg-editor.js"></script>
+<script src="js/svg-ui.js"></script>
+<script src="js/pdf-editor.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+[Desktop Entry]
+Type=Application
+Name=Vector
+GenericName=SVG & PDF Editor
+Comment=Edit SVG drawings and PDF documents — entirely offline
+Keywords=svg;vector;draw;pdf;edit;sign;redact;merge;split;
+
+# Template: @DIR@ / @WMDIR@ are filled in by the install command in README.md.
+# Launches as a standalone Chrome app window (no tabs or address bar).
+Exec=google-chrome-stable --app=file://@DIR@/index.html
+Icon=@DIR@/icons/icon-512.png
+
+Categories=Graphics;VectorGraphics;Office;Utility;
+MimeType=
+Path=
+Terminal=false
+StartupNotify=true
+
+# Groups the window under this launcher in the taskbar. Chrome derives the class
+# from the --app URL, so it must match the Exec line above.
+StartupWMClass=chrome-file_@WMDIR@_index.html-Default
